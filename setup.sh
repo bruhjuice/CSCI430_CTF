@@ -43,3 +43,6 @@ sudo systemctl status apache2
 
 # Use following command to log into sql server as root
 # sudo mysql -u root -p
+
+sudo mysql -u root -p < databaseSetup.sql
+sudo cp -r server_files/. /var/www/html/

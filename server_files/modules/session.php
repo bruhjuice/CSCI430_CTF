@@ -1,11 +1,11 @@
 <?php
-    startSession() {
-        if(!isset($_SESSION)) {
+    function startSession() {
+        if(session_id() == "") {
             session_start();
         }
     }
 
-    endSession() {
+    function endSession() {
         startSession();
 
         // Code from: https://www.php.net/manual/en/function.session-destroy.php

@@ -3,7 +3,7 @@
    //Start session
    require '../modules/config.php';
    require '../modules/database.php';
-   require '../modules/session.php'
+   require '../modules/session.php';
 
    startSession();
 
@@ -12,9 +12,8 @@
     $amount = isset($_GET['amount']) ? $_GET['amount'] : null;
     
     // Checks if user is logged in
-    if (!isset($_SESSION['loggedin'])) {
-        // Redirect to the login page
-        header("Location: login.php");
+    if (!isset($_SESSION['logged_in'])) {
+        echo "You are not logged in";
         exit();
     }
 

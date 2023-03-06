@@ -1,25 +1,24 @@
 <?php
 
 switch ($_GET['filename']) {
-    case 'login':
+    case 'login.php':
         require '../src/login.php';     // your news functions
         break;
 
-    case 'logout':
+    case 'logout.php':
         require '../src/lougout.php';
         break;
 
-    case 'manage':
+    case 'manage.php':
         require '../src/manage.php';
         break;
 
-    case 'register':
+    case 'register.php':
         require '../src/register.php';
         break;
 
     default:
-        header('HTTP/1.0 404 Not Found');
-        include 'tpl/page_not_found.tpl.php';
+        echo "Page not found";
     break;
 }
 

@@ -1,6 +1,6 @@
 <?php
     require("../modules/config.php");
-    require("../modules/session.php")
+    require("../modules/session.php");
     
     endSession();
 

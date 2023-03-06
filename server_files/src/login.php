@@ -14,7 +14,7 @@
         if(checkPassword($_GET['user'], $_GET['pass'])) {
             // Set session information
             $_SESSION["logged_in"] = true;
-            $_SESSION["username"] = $user["username"];
+            $_SESSION["username"] = $_GET["username"];
         }
         else {
             echo "Invalid Username or Password";
