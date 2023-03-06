@@ -1,20 +1,20 @@
 <?php
 
-    //Start session
-    require './config.php';
-
-    //Check for if username already exists and active
-
-    //Prepare SQL statement (Prevents SQL injection attacks)
-    $stmt = $conn->prepare("INSERT INTO users (username, password, salt, balance, closed) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssdi", $_GET['user'], $password, $salt, 0, false);
-
-    //Excute SQL statement
-    $executed = $stmt->execute();
-    if(!$executed) {
-        echo $mysqli->error;
+    require '../modules/config.php';
+    require '../modules/database.php'
+    
+    if(isset($_GET['user']) && $_GET['pass']) {
+        //TODO Check if username is already in use
+        if (checkUsernameAvaliable($_GET['user']) === false){
+            echo "Username Already in Use";
+            exit();
+        }
+        else{
+            createNewUser($_GET['user'], $_GET['pass']);
+            echo "Registration Successful";
+            exit();
+        }
     }
-
-
-    echo "Registration Successful";
+    echo "Missing username and password";
+    
 ?>
