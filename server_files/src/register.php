@@ -1,24 +1,27 @@
 <?php
-
     require '../modules/config.php';
     require '../modules/database.php';
-
-
-
-
-    
     if(isset($_GET['user']) && isset($_GET['pass'])) {
-        //TODO Check if username is already in use
-        if (checkUsernameAvaliable($_GET['user']) === false){
-            echo "Username Already in Use";
+        //Checks if username is empty
+        if($_GET['user'] == ''){
+            echo "Username cannot be empty\n";
+            exit();
+        }
+        Checks if password is empty
+        if($_GET['pass'] == ''){
+         echo "Password cannot be empty\n";
+         exit();
+        }
+        //Check if username is already in use       
+        if (checkUsernameAvailable($_GET['user']) == 1){
+            echo "Username already in use\n";
             exit();
         }
         else{
             createNewUser($_GET['user'], $_GET['pass']);
-            echo "Registration Successful";
+            echo "Registration successful\n";
             exit();
         }
     }
-    echo "Missing username and password";
-    
+    echo "Missing username/password\n";
 ?>

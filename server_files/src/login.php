@@ -8,7 +8,7 @@
     if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         endSession();
     }
-    
+
     startSession();
     if(isset($_GET['user']) && isset($_GET['pass'])) {
         if(checkPassword($_GET['user'], $_GET['pass'])) {
@@ -17,13 +17,12 @@
             $_SESSION["username"] = $_GET["username"];
         }
         else {
-            echo "Invalid Username or Password";
+            echo "Invalid Username or Password\n";
             exit();
         }
     }
     else {
-        echo  "Missing Username or Password";
+        echo  "Missing Username or Password\n";
         exit();
     }
-    echo "Successful Login";
-?>
+    echo "Login successful\n";

@@ -92,7 +92,7 @@
         $mysqli->close();
     }
 
-    function checkUsernameAvaliable($username) {
+    function checkUsernameAvailable($username) {
         $mysqli = initSQL();
         $stmt= $mysqli->prepare("SELECT * from users WHERE username=?;");
         $stmt->bind_param("s", $username);
