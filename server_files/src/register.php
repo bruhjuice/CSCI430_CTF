@@ -7,13 +7,13 @@
             echo "Username cannot be empty\n";
             exit();
         }
-        Checks if password is empty
+        //Checks if password is empty
         if($_GET['pass'] == ''){
          echo "Password cannot be empty\n";
          exit();
         }
         //Check if username is already in use       
-        if (checkUsernameAvailable($_GET['user']) == 1){
+        if (!checkUsernameAvailable($_GET['user'])){
             echo "Username already in use\n";
             exit();
         }

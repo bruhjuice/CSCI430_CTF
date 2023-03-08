@@ -41,10 +41,6 @@
     
     updateBalance($_SESSION['username'], $new_balance);
     
-    // Close the statement and database connection
-    $stmt->close();
-    $mysqli->close();
-    
     // Display the updated balance
     echo "New balance: " . $new_balance;
 

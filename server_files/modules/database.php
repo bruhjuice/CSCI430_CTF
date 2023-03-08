@@ -86,7 +86,7 @@
         $mysqli = initSQL();
         // Prepare the update statement to update the user's balance
         $stmt = $mysqli->prepare("UPDATE users SET balance = ? WHERE username = ?");
-        $stmt->bind_param("is", $new_balance, $username);
+        $stmt->bind_param("ds", $new_balance, $username);
         $stmt->execute();
         $stmt->close();
         $mysqli->close();
