@@ -46,3 +46,8 @@ sudo systemctl status apache2
 
 sudo mysql -u root -p < databaseSetup.sql
 sudo cp -r server_files/. /var/www/html/
+
+# Add configuration for .htaccess file
+sed -n 's/AllowOverride None/AllowOverride All/3' /etc/apache2/apache2.conf
+sudo a2enmod rewrite
+sudo systemctl restart apache2
