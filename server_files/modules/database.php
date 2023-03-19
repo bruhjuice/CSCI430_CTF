@@ -97,7 +97,7 @@
         $stmt= $mysqli->prepare("SELECT * from users WHERE username=?;");
         $stmt->bind_param("s", $username);
         $stmt->execute();
-        $stmt->fetch();
+        $stmt->store_result();
         $num_rows = $stmt->num_rows;
         $stmt->close();
         $mysqli->close();

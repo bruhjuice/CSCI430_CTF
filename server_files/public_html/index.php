@@ -1,8 +1,10 @@
 <?php
+require '../modules/logging.php';
+logInfo("INFO", "Recieved Request: ". $_SERVER['REQUEST_URI']);
 
 switch ($_GET['filename']) {
     case 'login.php':
-        require '../src/login.php';     // your news functions
+        require '../src/login.php';
         break;
 
     case 'logout.php':
