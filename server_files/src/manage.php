@@ -11,6 +11,7 @@
     
     // Checks if user is logged in
     if (!isset($_SESSION['logged_in'])) {
+        logInfo('ERROR', 'User Not Logged In');
         echo "You are not logged in";
         exit();
     }
@@ -20,19 +21,22 @@
     // Perform the action and update the balance
     if ($action === "deposit") {
         $new_balance = $balance + $amount;
+        logInfo('INFO', 'Deposit:' . $amount);
     } elseif ($action === "withdraw") {
         if ($balance >= $amount) {
             $new_balance = $balance - $amount;
+            logInfo('INFO', 'New Balance:' . $new_balance);
         } else {
             // Displays an error message
-            echo "Insufficient funds!";
+            logInfo('INFO', 'Insufficient funds!');
             exit();
         }
     } elseif ($action === "balance") {
-        echo "Balance: " . $balance;
+        logInfo('INFO', "Balance: " . $balance);
         exit();
     } elseif ($action === "close") {
         closeAccount($_SESSION['username']);
+        logInfo('INFO', 'Account Closed');
         endSession();
         exit();
     }

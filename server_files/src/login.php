@@ -15,14 +15,19 @@
             // Set session information
             $_SESSION["logged_in"] = true;
             $_SESSION["username"] = $_GET["user"];
+            logInfo('INFO', 'Login Successful');
         }
         else {
             echo "Invalid Username or Password\n";
+            logInfo('WARNING', 'Login Not Successful');
             exit();
         }
     }
     else {
         echo  "Missing Username or Password\n";
+        logInfo('WARNING', 'Login Not Successful');
         exit();
     }
     echo "Login successful\n";
+    exit();
+?>
