@@ -7,9 +7,9 @@
     //If someone is already logged in, log them out and try login flow
     if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         endSession();
+        startSession();
     }
 
-    startSession();
     if(isset($_GET['user']) && isset($_GET['pass'])) {
         if(checkPassword($_GET['user'], $_GET['pass'])) {
             // Set session information

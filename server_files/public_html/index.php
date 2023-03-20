@@ -1,5 +1,7 @@
 <?php
 require '../modules/logging.php';
+require '../modules/session.php';
+startSession();
 logInfo("INFO", "Recieved Request: ". $_SERVER['REQUEST_URI']);
 
 switch ($_GET['filename']) {

@@ -5,8 +5,6 @@
    require '../modules/database.php';
    require '../modules/session.php';
 
-   startSession();
-
     // Get the action and amount from the URL
     $action = $_GET['action'];
     $amount = isset($_GET['amount']) ? $_GET['amount'] : null;
