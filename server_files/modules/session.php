@@ -1,6 +1,8 @@
 <?php
     function startSession() {
         if(session_id() == "") {
+            //indicating hash function to session ID - sha512
+            ini_set('session.hash_function', 'sha512');
             session_start();
         }
     }
@@ -23,6 +25,7 @@
         }
 
         // Finally, destroy the session.
+        session_unset();
         session_destroy();
     }
 ?>
