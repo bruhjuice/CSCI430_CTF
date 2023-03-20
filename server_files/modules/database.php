@@ -3,7 +3,7 @@
     function initSQL() {
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if($mysqli->connect_errno) {
-            echo $mysqli->connect_error; //TODO replace echo with logging 
+            logInfo('ERROR', $mysqli->connect_error);
             exit();
         }
         return $mysqli;

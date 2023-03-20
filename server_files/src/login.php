@@ -7,9 +7,8 @@
     //If someone is already logged in, log them out and try login flow
     if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         endSession();
+        startSession();
     }
-
-    startSession();
 
     //store current session id, once the new session is initialised for the user trying to login.
     $old_session_id = session_id()
@@ -31,10 +30,12 @@
                 // Set session information
                 $_SESSION["logged_in"] = true;
                 $_SESSION["username"] = $_GET["username"];
+                logInfo('INFO', 'Login Successful');
             }
         }
         else {
             echo "Invalid Username or Password\n";
+            logInfo('WARNING', 'Login Not Successful');
             session_unset();
             session_destroy();
             exit();
@@ -42,8 +43,11 @@
     }
     else {
         echo  "Missing Username or Password\n";
+        logInfo('WARNING', 'Login Not Successful');
         session_unset();
         session_destroy();
         exit();
     }
     echo "Login successful\n";
+    exit();
+?>
