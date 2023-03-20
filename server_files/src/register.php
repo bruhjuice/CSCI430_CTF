@@ -13,7 +13,7 @@
          exit();
         }
         //Check if username is already in use       
-        if (!checkUsernameAvailable($_GET['user'])){
+        if (checkUsernameAvailable($_GET['user']) == 1){
             echo "Username already in use\n";
             exit();
         }
