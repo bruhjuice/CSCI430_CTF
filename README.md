@@ -27,6 +27,8 @@ Run setup script: `./setup.sh`
 6. Run `sudo service cron restart`
 7. Use `sudo grep CRON /var/log/syslog or cat log.txt` to check for logs
 
+
+
 ## Run test cases
 1. Go to the test scripts folder
 2. Run the tests, you may need to give yourself execution privileges
