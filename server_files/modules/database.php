@@ -1,5 +1,5 @@
 <?php
-
+    require_once "config.php";
     function initSQL() {
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if($mysqli->connect_errno) {
@@ -9,7 +9,7 @@
         return $mysqli;
     }
     
-
+    // ============== USER INFO ==============
     function createNewUser($username, $password) {
         $mysqli = initSQL();
 
@@ -96,6 +96,68 @@
         $mysqli = initSQL();
         $stmt= $mysqli->prepare("SELECT * from users WHERE username=?;");
         $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        $mysqli->close();
+        return $num_rows === 0;
+    }
+
+    // ============== IP INFO ==============
+    function checkIP($ip) {
+        $mysqli = initSQL();
+        $stmt= $mysqli->prepare("SELECT ip from ips WHERE ip=?;");
+        $stmt->bind_param("s", $ip);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        $mysqli->close();
+        return $num_rows === 0;
+    }
+
+    function insertNewIP($ip) {
+        $mysqli = initSQL();
+        //Insert statement
+        $stmt = $mysqli->prepare("INSERT INTO ips (ip, failCount, successCount, lastAttempted, consecutiveFails) VALUES (?, 0, 0, current_timestamp(), 0);");
+        $stmt->bind_param("s", $ip);
+        $stmt->execute();
+        $stmt->close();
+        $mysqli->close();
+    }
+
+    function updateIpSuccess($ip) {
+        $mysqli = initSQL();
+        $stmt = $mysqli->prepare(UPDATE ips set successCount = successCount + 1, lastAttempted = current_timestamp(), consecutiveFails = 0 where ip = ?;);
+        $stmt->bind_param("s", $ip);
+        $stmt->execute();
+        $stmt->close();
+        $mysqli->close();
+    }
+
+    function updateIpFailure($ip) {
+        $mysqli = initSQL();
+        $stmt = $mysqli->prepare(UPDATE ips set failCount = failCount + 1, lastAttempted = current_timestamp(), consecutiveFails = consecutiveFails + 1 where ip = ?;);
+        $stmt->bind_param("s", $ip);
+        $stmt->execute();
+        $stmt->close();
+        $mysqli->close();
+    }
+
+    function updateLastAttempted($ip) {
+        $mysqli = initSQL();
+        $stmt = $mysqli->prepare(UPDATE ips set lastAttempted = current_timestamp() where ip = ?;);
+        $stmt->bind_param("s", $ip);
+        $stmt->execute();
+        $stmt->close();
+        $mysqli->close();
+    }
+
+    function isBlockedIP($ip) {
+        $mysqli = initSQL();
+        $stmt = $mysqli->prepare("SELECT ip FROM ips WHERE lastAttempted >= NOW() - INTERVAL 10 MINUTE AND consecutiveFails > 5 AND ip=?;");
+        $stmt->bind_param("s", $ip);
         $stmt->execute();
         $stmt->store_result();
         $num_rows = $stmt->num_rows;

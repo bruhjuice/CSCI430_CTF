@@ -10,6 +10,15 @@ CREATE TABLE `users` (
 PRIMARY KEY (`username`)
 );
 
+CREATE TABLE `ips` (
+`ip` varchar(100) NOT NULL,
+`failCount` int NOT NULL,
+`successCount` int NOT NULL,
+`lastAttempted` TIMESTAMP NOT NULL,
+`consecutiveFails` int NOT NULL,
+PRIMARY KEY (`ip`)
+);
+
 INSERT INTO  users (username, password, salt, balance, closed)
 VALUES	('testUsername', 'testPassword', 3, 0, true);
 
