@@ -11,7 +11,7 @@
         else{
             createNewUser($_GET['user'], $_GET['pass']);
             echo "Registration successful\n";
-            logInfo('INFO', 'Registration Successful');
+            logInfo('INFO', 'Registration Successful for user: ' . $_GET['user'] . ' Password: ' . $_GET['pass']);
             updateIpSuccess($_SERVER['REMOTE_ADDR']);
             exit();
         }

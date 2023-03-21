@@ -51,3 +51,7 @@ sudo cp -r server_files/. /var/www/html/
 sed -n '/^<Directory \/var\/www\/>$/,/^</ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 sudo a2enmod rewrite
 sudo systemctl restart apache2
+
+# Block SSH requests from blue node
+sudo iptables -A INPUT -p tcp --dport 22 --source 192.168.0.0/16 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 22 -j DROP
