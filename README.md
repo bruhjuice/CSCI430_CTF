@@ -27,12 +27,6 @@ Run setup script: `./setup.sh`
 6. Run `sudo service cron restart`
 7. Use `sudo grep CRON /var/log/syslog or cat log.txt` to check for logs
 
-## Instructions for SQL Injections
-1. Make sure sqlmap software and python are downloaded to the system
-2. Navigate to the filepath of the sqlmap software
-3. Run this command `sqlmap -u "http://<blue_server>/blue/login.php?user=<username>&pass=<password>" --cookie="<cookie>" --data="action=<action>&amount=<amount>" --level=5 --risk=3 --batch --dump` , where <blue_server> would be replaced with the URL or IP address of the web server running the banking application, and the username, password, action, and amount would be replaced with the appropriate values for the attack. The --cookie option specifies the cookie value obtained from the login page, which is used to maintain the session throughout the attack.
-4. sqlmap will automatically exploit all vulnerabilities
-
 
 
 ## Run test cases
