@@ -1,13 +1,41 @@
 <?php
 
-   //Start session
-   require '../modules/config.php';
-   require '../modules/database.php';
-   require '../modules/session.php';
+    require_once '../modules/database.php';
+    require_once '../modules/session.php';
+
+    // Checks if user is logged in
+    if (!isset($_SESSION['logged_in'])) {
+        echo "You are not logged in\n";
+        logInfo('ERROR', 'Manage request while not logged in');
+        updateIpFailure($_SERVER['REMOTE_ADDR']);
+        exit();
+    }
+
+    //Check for request parameters
+    if(!isset($_GET['action'])) {
+        echo "Missing action";
+        logInfo('ERROR', 'Missing Action in Request');
+        updateIpFailure($_SERVER['REMOTE_ADDR']);
+        exit();
+    }
+    if(!in_array($_GET['action'], array('deposit', 'withdraw', 'balance', 'close'))) {
+        echo "Invalid Action";
+        logInfo('ERROR', 'Invalid Action: ' . $action);
+        updateIpFailure($_SERVER['REMOTE_ADDR']);
+        exit();
+    }
+    if($_GET['action'] !== "close" && !is_numeric($_GET['amount'])) {
+        echo "Invalid Amount";
+        logInfo('ERROR', 'Invalid Amount: ' . $amount);
+        updateIpFailure($_SERVER['REMOTE_ADDR']);
+        exit();
+    }
     
     if(time() > ($_SESSION['lastaccess']+600)){
         endSession();
-        echo "Session timed out\n";
+        echo "Session Timed out\n"
+        logInfo('WARNING', 'Session Time Out');
+        updateIpFailure($_SERVER['REMOTE_ADDR']);
         exit();
     }
     else{
@@ -21,48 +49,48 @@
         // Get the action and amount from the URL
         $action = $_GET['action'];
         $amount = isset($_GET['amount']) ? $_GET['amount'] : null;
-        
-        // Checks if user is logged in
-        if (!isset($_SESSION['logged_in'])) {
-            echo "You are not logged in\n";
-            exit();
-        }
 
         $balance = getBalance($_SESSION['username']);
         
         // Perform the action and update the balance
         if ($action === "deposit") {
             $new_balance = $balance + $amount;
-            logInfo('INFO', 'Deposit:' . $amount);
+            logInfo('INFO', 'Deposit: ' . $amount);
         } elseif ($action === "withdraw") {
             if ($balance >= $amount) {
                 $new_balance = $balance - $amount;
-                logInfo('INFO', 'New Balance:' . $new_balance);
+                logInfo('INFO', 'Withdrew: ' . $amount);
             } else {
                 // Displays an error message
                 echo "Insufficient funds!\n";
-                logInfo('INFO', 'Insufficient funds!');
+                logInfo('WARNING', 'Insufficient funds for withdraw!');
+                updateIpFailure($_SERVER['REMOTE_ADDR']);
                 exit();
             }
         } elseif ($action === "balance") {
             echo "Balance: $balance\n";
-            logInfo('INFO', "Balance: " . $balance);
+            logInfo('INFO', "Query Balance: " . $balance);
+            updateIpSuccess($_SERVER['REMOTE_ADDR']);
             exit();
         } elseif ($action === "close") {
             closeAccount($_SESSION['username']);
             logInfo('INFO', 'Account Closed');
+            updateIpSuccess($_SERVER['REMOTE_ADDR']);
             endSession();
+            exit();
+        } else {
+            echo "Invalid Action";
+            logInfo('ERROR', 'Invalid Action: ' . $action);
+            updateIpFailure($_SERVER['REMOTE_ADDR']);
             exit();
         }
         
         updateBalance($_SESSION['username'], $new_balance);
-        
-        // Close the statement and database connection
-        $stmt->close();
-        $mysqli->close();
+        updateIpSuccess($_SERVER['REMOTE_ADDR']);
         
         // Display the updated balance
         echo "New balance: $new_balance\n";
+        exit();
     }
     
 

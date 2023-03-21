@@ -1,8 +1,6 @@
 <?php
-    //Start session
-    require '../modules/config.php';
-    require '../modules/database.php';
-    require '../modules/session.php';
+    require_once '../modules/database.php';
+    require_once '../modules/session.php';
 
     //If someone is already logged in, log them out and try login flow
     if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
@@ -15,39 +13,33 @@
 
     if(isset($_GET['user']) && isset($_GET['pass'])) {
         if(checkPassword($_GET['user'], $_GET['pass'])) {
-            
-            if(time() > ($_SESSION['lastaccess']+600)){
-                endSession();
-                echo "Session Timed out\n"
-                exit();
-            }
-            else{
-                //resetting session ID post confirmation of login to prevent session hijacking
-                session_regenerate_id();
-                //the new session id is propagated to user through cookies. 
-                $new_session_id = session_id();
-                $_SESSION['lastaccess'] = time();
-                // Set session information
-                $_SESSION["logged_in"] = true;
-                $_SESSION["username"] = $_GET["username"];
-                logInfo('INFO', 'Login Successful');
-            }
+            //resetting session ID post confirmation of login to prevent session hijacking
+            session_regenerate_id();
+            //the new session id is propagated to user through cookies. 
+            $new_session_id = session_id();
+            $_SESSION['lastaccess'] = time();
+            // Set session information
+            $_SESSION["logged_in"] = true;
+            $_SESSION["username"] = $_GET["username"];
+            $_SESSION["ip"] = $_SERVER['REMOTE_ADDR'];
+            echo "Login successful\n";
+            logInfo('INFO', 'Login Successful');
+            updateIpSuccess($_SERVER['REMOTE_ADDR']);
+            exit();
         }
         else {
             echo "Invalid Username or Password\n";
-            logInfo('WARNING', 'Login Not Successful');
-            session_unset();
-            session_destroy();
+            logInfo('WARNING', 'Invalid Username/Password for Login');
+            updateIpFailure($_SERVER['REMOTE_ADDR']);
+            endSession();
             exit();
         }
     }
     else {
         echo  "Missing Username or Password\n";
-        logInfo('WARNING', 'Login Not Successful');
-        session_unset();
-        session_destroy();
+        logInfo('WARNING', 'Missing Username/Password for Login');
+        updateIpFailure($_SERVER['REMOTE_ADDR']);
+        endSession();
         exit();
     }
-    echo "Login successful\n";
-    exit();
 ?>
