@@ -9,7 +9,7 @@
     }
 
     //store current session id, once the new session is initialised for the user trying to login.
-    $old_session_id = session_id()
+    $old_session_id = session_id();
 
     if(isset($_GET['user']) && isset($_GET['pass'])) {
         if(checkPassword($_GET['user'], $_GET['pass'])) {
@@ -20,7 +20,7 @@
             $_SESSION['lastaccess'] = time();
             // Set session information
             $_SESSION["logged_in"] = true;
-            $_SESSION["username"] = $_GET["username"];
+            $_SESSION["username"] = $_GET["user"];
             $_SESSION["ip"] = $_SERVER['REMOTE_ADDR'];
             echo "Login successful\n";
             logInfo('INFO', 'Login Successful');

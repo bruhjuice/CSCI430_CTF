@@ -114,7 +114,7 @@
         $num_rows = $stmt->num_rows;
         $stmt->close();
         $mysqli->close();
-        return $num_rows === 0;
+        return $num_rows === 1;
     }
 
     function insertNewIP($ip) {
@@ -129,7 +129,7 @@
 
     function updateIpSuccess($ip) {
         $mysqli = initSQL();
-        $stmt = $mysqli->prepare(UPDATE ips set successCount = successCount + 1, lastAttempted = current_timestamp(), consecutiveFails = 0 where ip = ?;);
+        $stmt = $mysqli->prepare("UPDATE ips set successCount = successCount + 1, lastAttempted = current_timestamp(), consecutiveFails = 0 where ip = ?;");
         $stmt->bind_param("s", $ip);
         $stmt->execute();
         $stmt->close();
@@ -138,7 +138,7 @@
 
     function updateIpFailure($ip) {
         $mysqli = initSQL();
-        $stmt = $mysqli->prepare(UPDATE ips set failCount = failCount + 1, lastAttempted = current_timestamp(), consecutiveFails = consecutiveFails + 1 where ip = ?;);
+        $stmt = $mysqli->prepare("UPDATE ips set failCount = failCount + 1, lastAttempted = current_timestamp(), consecutiveFails = consecutiveFails + 1 where ip = ?;");
         $stmt->bind_param("s", $ip);
         $stmt->execute();
         $stmt->close();
@@ -147,7 +147,7 @@
 
     function updateLastAttempted($ip) {
         $mysqli = initSQL();
-        $stmt = $mysqli->prepare(UPDATE ips set lastAttempted = current_timestamp() where ip = ?;);
+        $stmt = $mysqli->prepare("UPDATE ips set lastAttempted = current_timestamp() where ip = ?;");
         $stmt->bind_param("s", $ip);
         $stmt->execute();
         $stmt->close();
@@ -163,7 +163,7 @@
         $num_rows = $stmt->num_rows;
         $stmt->close();
         $mysqli->close();
-        return $num_rows === 0;
+        return $num_rows === 1;
     }
 
 ?>

@@ -24,7 +24,7 @@
         updateIpFailure($_SERVER['REMOTE_ADDR']);
         exit();
     }
-    if($_GET['action'] !== "close" && !is_numeric($_GET['amount'])) {
+    if($_GET['action'] !== "close" && $_GET['action'] !== "balance" && !is_numeric($_GET['amount'])) {
         echo "Invalid Amount";
         logInfo('ERROR', 'Invalid Amount: ' . $amount);
         updateIpFailure($_SERVER['REMOTE_ADDR']);
@@ -33,7 +33,7 @@
     
     if(time() > ($_SESSION['lastaccess']+600)){
         endSession();
-        echo "Session Timed out\n"
+        echo "Session Timed out\n";
         logInfo('WARNING', 'Session Time Out');
         updateIpFailure($_SERVER['REMOTE_ADDR']);
         exit();
@@ -68,7 +68,7 @@
                 exit();
             }
         } elseif ($action === "balance") {
-            echo "Balance: $balance\n";
+            echo "Balance: " . $balance . "\n";
             logInfo('INFO', "Query Balance: " . $balance);
             updateIpSuccess($_SERVER['REMOTE_ADDR']);
             exit();
