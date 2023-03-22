@@ -1,27 +1,40 @@
 #!/bin/bash
 
-#Test case 1: User not logged in
-result=$(curl -s "localhost:80/src/manage.php?action=testaction1&amount=testamt1")
-if test "$result" = "You are not logged in"; then
-    echo "Test case 1 passed"
-else
-    echo "Test case 1 failed: $result"
-fi
+# Obtain session cookies from login.php
+cookies=$(sudo curl -s -c - 'localhost/login.php?user=apple&pass=apple' | grep 'PHPSESSID' | awk '{print $7}')
 
-#test case 2: Insufficient balance
-result=$(curl -s "localhost:80/src/manage.php?action=withdraw&amount=testAmt2")
-if test "$result" = "Insufficient funds!"; then
-    echo "Test case 2 passed"
-else
-    echo "Test case 2 failed: $result"
-fi
+# Make a deposit of $50
+echo 'Testing legitimate deposit'
+deposit_response=$(sudo curl -s -b "PHPSESSID=$cookies" 'localhost/manage.php?action=deposit&amount=50')
+echo $deposit_response
+echo ""
 
-#test case3: successfull operation
-result=$(curl -s "localhost:80/src/manage.php?action=testAction2&amount=testAmt3")
-bal="New balance:"
-if test [[ "$result" =~ .*"$bal".* ]]; then
-    echo "Test case 3 passed"
-else
-    echo "Test case 3 failed: $result"
-fi
+# Make a withdrawak of $10
+echo 'Testing legitimate withdraw'
+withL_response=$(sudo curl -s -b "PHPSESSID=$cookies" 'localhost/manage.php?action=withdraw&amount=10')
+echo $withL_response
+echo ""
 
+# Check balance
+echo 'checking balance'
+balance_response=$(sudo curl -s -b "PHPSESSID=$cookies" 'localhost/manage.php?action=balance')
+echo $balance_response 
+echo ""
+
+# Attempt to withdraw $10000 (should fail due to insufficient funds)
+echo 'checking withdrawl where balance < amount requested'
+withdraw_response=$(sudo curl -s -b "PHPSESSID=$cookies" 'localhost/manage.php?action=withdraw&amount=10000')
+echo $withdraw_response 
+echo ""
+
+# Log out
+logout_response=$(sudo curl -s -b "PHPSESSID=$cookies" 'localhost/logout.php')
+echo $logout_response 
+echo ""
+
+
+# Check for logged out session
+echo 'checking for logged out session'
+logged_out_response=$(sudo curl -s -b "PHPSESSID=$cookies" 'localhost/manage.php?action=balance')
+echo $logged_out_response
+echo ""
