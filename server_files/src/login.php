@@ -1,6 +1,7 @@
 <?php
     require_once '../modules/database.php';
     require_once '../modules/session.php';
+    require_once '../modules/logging.php';
 
     //If someone is already logged in, log them out and try login flow
     if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {

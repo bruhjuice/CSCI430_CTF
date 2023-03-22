@@ -28,7 +28,7 @@ switch ($_GET['filename']) {
         break;
 
     case 'logout.php':
-        require '../src/lougout.php';
+        require '../src/logout.php';
         break;
 
     case 'manage.php':
@@ -41,7 +41,7 @@ switch ($_GET['filename']) {
 
     default:
         echo "Page not found";
-    break;
+        break;
 }
 
 ?>

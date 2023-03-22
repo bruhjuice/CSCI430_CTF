@@ -1,9 +1,10 @@
 <?php
     require_once '../modules/database.php';
     require_once '../modules/logging.php';
+
     if(isset($_GET['user']) && isset($_GET['pass']) && $_GET['user'] != '' && $_GET['pass'] != '') {
         //Check if username is already in use       
-        if (checkUsernameAvailable($_GET['user'])){
+        if (!checkUsernameAvailable($_GET['user'])){
             echo "Username already in use\n";
             logInfo('WARNING', 'Registration Not Successful, Username in use: '. $_GET['user']);
             updateIpFailure($_SERVER['REMOTE_ADDR']);
