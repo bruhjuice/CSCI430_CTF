@@ -59,7 +59,7 @@
         if ($action === "deposit") {
             $new_balance = $balance + $amount;
             updateBalance($_SESSION['username'], $new_balance);
-            echo 'balnce=' . $new_balance .'\n';
+            echo 'balnce=' . $new_balance;
             logInfo('INFO', 'Deposit: ' . $amount);
             updateIpSuccess($_SERVER['REMOTE_ADDR']);
             exit();
@@ -67,7 +67,7 @@
             if ($balance >= $amount) {
                 $new_balance = $balance - $amount;
                 updateBalance($_SESSION['username'], $new_balance);
-                echo 'balance=' . $new_balance.'\n';
+                echo 'balance=' . $new_balance;
                 logInfo('INFO', 'Withdrew: ' . $amount);
             } else {
                 // Displays an error message
