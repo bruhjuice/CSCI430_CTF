@@ -51,15 +51,15 @@
 
         // Get the action and amount from the URL
         $action = $_GET['action'];
-        $amount = isset($_GET['amount']) ? $_GET['amount'] : null;
+        $amount = isset($_GET['amount']) ? (int)$_GET['amount'] : null;
 
-        $balance = getBalance($_SESSION['username']);
+        $balance = (int)getBalance($_SESSION['username']);
         
         // Perform the action and update the balance
         if ($action === "deposit") {
             $new_balance = $balance + $amount;
             updateBalance($_SESSION['username'], $new_balance);
-            echo 'Deposit successful. Your new balance is: $' . $new_balance .'\n';
+            echo 'balnce=' . $new_balance .'\n';
             logInfo('INFO', 'Deposit: ' . $amount);
             updateIpSuccess($_SERVER['REMOTE_ADDR']);
             exit();
@@ -67,7 +67,7 @@
             if ($balance >= $amount) {
                 $new_balance = $balance - $amount;
                 updateBalance($_SESSION['username'], $new_balance);
-                echo 'Withdrawal successful. Your new balance is: $' . $new_balance.'\n';
+                echo 'balance=' . $new_balance.'\n';
                 logInfo('INFO', 'Withdrew: ' . $amount);
             } else {
                 // Displays an error message
@@ -77,7 +77,7 @@
                 exit();
             }
         } elseif ($action === "balance") {
-            echo 'Your current balance is: $' . $balance;
+            echo 'balance' . $balance;
             logInfo('INFO', "Query Balance: " . $balance);
             updateIpSuccess($_SERVER['REMOTE_ADDR']);
             exit();
